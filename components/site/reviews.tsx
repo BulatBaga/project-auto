@@ -2,52 +2,81 @@
 
 import Image from 'next/image'
 import { motion } from 'motion/react'
-import { Star, Quote } from 'lucide-react'
+import { Star } from 'lucide-react'
 import { reviews } from '@/lib/site'
+import { SectionHeading } from './reveal'
+
+const LUXURY = [0.16, 1, 0.3, 1] as const
 
 export function Reviews() {
   return (
-    <section className="relative bg-secondary/40 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-14 flex flex-col gap-4">
-          <span className="text-sm font-medium uppercase tracking-[0.2em] text-accent">
-            Отзывы клиентов
-          </span>
-          <h2 className="max-w-2xl font-display text-4xl font-bold uppercase leading-none tracking-tight text-balance md:text-6xl">
-            Что говорят наши покупатели
-          </h2>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          {reviews.map((r, i) => (
-            <motion.figure
-              key={r.name}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="glass relative flex h-full flex-col rounded-3xl p-8"
-            >
-              <Quote className="mb-4 h-9 w-9 text-accent/40" />
-              <div className="mb-4 flex gap-1">
+    <section className="relative overflow-hidden py-28 md:py-40">
+      <div className="mx-auto max-w-7xl px-6 md:px-10">
+        <div className="mb-16 flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
+          <SectionHeading
+            eyebrow="Отзывы клиентов"
+            title="Что говорят наши покупатели"
+          />
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: LUXURY }}
+            className="flex items-center gap-4 rounded-2xl border border-white/[0.07] bg-card px-6 py-4 ring-hairline"
+          >
+            <span className="font-display text-4xl font-bold text-foreground">4.9</span>
+            <div className="flex flex-col gap-1">
+              <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, s) => (
                   <Star key={s} className="h-4 w-4 fill-accent text-accent" />
                 ))}
               </div>
-              <blockquote className="flex-1 leading-relaxed text-foreground/90">
+              <span className="text-xs text-muted-foreground">на основе 500+ отзывов</span>
+            </div>
+          </motion.div>
+        </div>
+
+        <div className="grid gap-7 md:grid-cols-3">
+          {reviews.map((r, i) => (
+            <motion.figure
+              key={r.name}
+              initial={{ opacity: 0, y: 48, filter: 'blur(10px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.9, delay: i * 0.12, ease: LUXURY }}
+              whileHover={{ y: -8 }}
+              className="group relative flex h-full flex-col overflow-hidden rounded-[1.75rem] border border-white/[0.07] bg-card p-9 ring-hairline transition-all duration-500 hover:border-accent/25 hover:shadow-luxury"
+            >
+              {/* oversized quotation mark */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -right-2 -top-6 font-display text-[10rem] leading-none text-accent/10 transition-colors duration-500 group-hover:text-accent/20"
+              >
+                &rdquo;
+              </span>
+
+              <div className="mb-5 flex gap-1">
+                {Array.from({ length: 5 }).map((_, s) => (
+                  <Star key={s} className="h-4.5 w-4.5 fill-accent text-accent" />
+                ))}
+              </div>
+              <blockquote className="relative flex-1 text-lg leading-relaxed text-foreground/90">
                 {r.text}
               </blockquote>
-              <figcaption className="mt-6 flex items-center gap-4 border-t border-border pt-6">
-                <Image
-                  src={r.image || '/placeholder.svg'}
-                  alt={r.name}
-                  width={48}
-                  height={48}
-                  className="h-12 w-12 rounded-full object-cover"
-                />
+              <figcaption className="mt-8 flex items-center gap-4 border-t border-white/[0.06] pt-7">
+                <div className="relative">
+                  <span className="absolute inset-0 rounded-full ring-2 ring-accent/30 ring-offset-2 ring-offset-card" />
+                  <Image
+                    src={r.image || '/placeholder.svg'}
+                    alt={r.name}
+                    width={52}
+                    height={52}
+                    className="relative h-13 w-13 rounded-full object-cover"
+                  />
+                </div>
                 <div>
                   <div className="font-semibold text-foreground">{r.name}</div>
-                  <div className="text-sm text-muted-foreground">{r.role}</div>
+                  <div className="text-sm text-accent/90">{r.role}</div>
                 </div>
               </figcaption>
             </motion.figure>

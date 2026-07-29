@@ -31,28 +31,30 @@
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 12px);
   --radius-3xl: calc(var(--radius) + 20px);
+
+  --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :root {
   color-scheme: dark;
-  --radius: 1rem;
+  --radius: 1.25rem;
 
-  --background: #090909;
-  --foreground: #ffffff;
-  --secondary: #151515;
+  --background: #070707;
+  --foreground: #f5f5f5;
+  --secondary: #101011;
   --secondary-foreground: #ffffff;
-  --card: #1d1d1d;
+  --card: #141416;
   --card-foreground: #ffffff;
-  --muted: #151515;
-  --muted-foreground: #b8b8b8;
+  --muted: #101011;
+  --muted-foreground: #9a9a9e;
   --accent: #39f2da;
   --accent-foreground: #041412;
   --primary: #39f2da;
   --primary-foreground: #041412;
-  --popover: #151515;
+  --popover: #101011;
   --popover-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.08);
-  --input: rgba(255, 255, 255, 0.12);
+  --border: rgba(255, 255, 255, 0.07);
+  --input: rgba(255, 255, 255, 0.1);
   --ring: #39f2da;
 }
 
@@ -66,6 +68,7 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings: 'ss01', 'cv01';
+    -webkit-font-smoothing: antialiased;
   }
   ::selection {
     background: var(--accent);
@@ -75,27 +78,100 @@
 
 @layer utilities {
   .text-glow {
-    text-shadow: 0 0 24px rgba(57, 242, 218, 0.55);
+    text-shadow: 0 0 40px rgba(57, 242, 218, 0.45),
+      0 0 12px rgba(57, 242, 218, 0.35);
   }
   .glass {
-    background: rgba(21, 21, 21, 0.55);
-    backdrop-filter: blur(18px) saturate(140%);
-    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    background: rgba(18, 18, 20, 0.6);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
+  .glass-strong {
+    background: rgba(14, 14, 16, 0.82);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+  }
+  /* premium layered shadow */
+  .shadow-luxury {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4),
+      0 12px 32px -8px rgba(0, 0, 0, 0.65),
+      0 40px 80px -24px rgba(0, 0, 0, 0.7);
+  }
   .btn-glow {
-    box-shadow: 0 0 0 1px rgba(57, 242, 218, 0.35),
-      0 8px 30px -6px rgba(57, 242, 218, 0.5);
+    box-shadow: 0 0 0 1px rgba(57, 242, 218, 0.4),
+      0 6px 20px -4px rgba(57, 242, 218, 0.45),
+      0 14px 44px -10px rgba(57, 242, 218, 0.4);
+  }
+  .btn-glow-hover {
+    box-shadow: 0 0 0 1px rgba(57, 242, 218, 0.6),
+      0 8px 28px -4px rgba(57, 242, 218, 0.6),
+      0 20px 60px -8px rgba(57, 242, 218, 0.55);
   }
   .accent-ring {
-    box-shadow: 0 0 60px -10px rgba(57, 242, 218, 0.35);
+    box-shadow: 0 0 60px -10px rgba(57, 242, 218, 0.4);
+  }
+  .ring-hairline {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
   .grain {
     background-image: radial-gradient(
-      rgba(255, 255, 255, 0.025) 1px,
+      rgba(255, 255, 255, 0.02) 1px,
       transparent 1px
     );
     background-size: 3px 3px;
+  }
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--accent);
+  }
+}
+
+/* soft ambient light sweep */
+@keyframes light-sweep {
+  0% {
+    transform: translateX(-30%) translateY(-10%) rotate(8deg);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateX(20%) translateY(6%) rotate(8deg);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(-30%) translateY(-10%) rotate(8deg);
+    opacity: 0.35;
+  }
+}
+.animate-light-sweep {
+  animation: light-sweep 14s ease-in-out infinite;
+}
+
+@keyframes smoke-drift {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateX(6%) translateY(-4%) scale(1.08);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: 0.4;
+  }
+}
+.animate-smoke {
+  animation: smoke-drift 18s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-light-sweep,
+  .animate-smoke {
+    animation: none;
   }
 }
 
@@ -104,10 +180,10 @@
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #090909;
+  background: #070707;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
+  background: #26262a;
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {

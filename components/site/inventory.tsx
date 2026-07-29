@@ -5,6 +5,7 @@ import { motion } from 'motion/react'
 import { SlidersHorizontal } from 'lucide-react'
 import { cars as allCars, type Car } from '@/lib/site'
 import { CarCard } from './car-card'
+import { SectionHeading } from './reveal'
 
 type Filters = {
   brand: string
@@ -78,40 +79,23 @@ export function Inventory({ inventory = allCars }: { inventory?: Car[] }) {
   ]
 
   return (
-    <section id="inventory" className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <div className="mb-14 flex flex-col gap-4">
-        <motion.span
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-sm font-medium uppercase tracking-[0.2em] text-accent"
-        >
-          Автомобили в наличии
-        </motion.span>
-        <motion.h2
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="max-w-2xl font-display text-4xl font-bold uppercase leading-none tracking-tight text-balance md:text-6xl"
-        >
-          Каталог проверенных автомобилей
-        </motion.h2>
-        <p className="max-w-xl text-muted-foreground">
-          Каждый автомобиль проходит полную техническую и юридическую проверку перед
-          продажей.
-        </p>
-      </div>
+    <section id="inventory" className="relative mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-40">
+      <SectionHeading
+        className="mb-16"
+        eyebrow="Автомобили в наличии"
+        title="Каталог проверенных автомобилей"
+        description="Каждый автомобиль проходит полную техническую и юридическую проверку перед продажей."
+      />
 
       {/* Filter */}
       <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 28, filter: 'blur(8px)' }}
+        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="glass mb-12 rounded-3xl p-6"
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className="glass-strong ring-hairline mb-14 rounded-[1.75rem] p-7 shadow-luxury"
       >
-        <div className="mb-5 flex items-center gap-2 text-sm font-semibold text-foreground">
+        <div className="mb-6 flex items-center gap-2.5 text-sm font-semibold text-foreground">
           <SlidersHorizontal className="h-4 w-4 text-accent" />
           Подбор по параметрам
         </div>
@@ -135,7 +119,7 @@ export function Inventory({ inventory = allCars }: { inventory?: Car[] }) {
       </motion.div>
 
       {filtered.length > 0 ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((car, i) => (
             <CarCard key={car.id} car={car} index={i} />
           ))}

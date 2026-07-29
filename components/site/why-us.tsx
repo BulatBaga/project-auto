@@ -9,7 +9,7 @@ import {
   Banknote,
   FileCheck,
 } from 'lucide-react'
-import { Reveal } from './reveal'
+import { Reveal, SectionHeading } from './reveal'
 
 const benefits = [
   {
@@ -46,28 +46,26 @@ const benefits = [
 
 export function WhyUs() {
   return (
-    <section className="relative bg-secondary/40 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-14 flex flex-col gap-4">
-          <span className="text-sm font-medium uppercase tracking-[0.2em] text-accent">
-            Почему выбирают нас
-          </span>
-          <h2 className="max-w-2xl font-display text-4xl font-bold uppercase leading-none tracking-tight text-balance md:text-6xl">
-            Уверенность в каждой покупке
-          </h2>
-        </div>
+    <section className="relative border-y border-white/[0.05] bg-secondary/30 py-28 md:py-40">
+      <div className="mx-auto max-w-7xl px-6 md:px-10">
+        <SectionHeading
+          className="mb-16"
+          eyebrow="Почему выбирают нас"
+          title="Уверенность в каждой покупке"
+        />
 
-        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {benefits.map((b, i) => (
             <Reveal key={b.title} delay={(i % 3) * 0.1}>
               <motion.div
-                whileHover={{ y: -6 }}
-                className="group h-full rounded-3xl border border-border bg-card p-8 transition-colors hover:border-accent/40"
+                whileHover={{ y: -8 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+                className="group relative h-full overflow-hidden rounded-[1.75rem] border border-white/[0.07] bg-card p-9 ring-hairline transition-all duration-500 hover:border-accent/25 hover:shadow-luxury"
               >
-                <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-accent/30 bg-accent/10 text-accent transition-all group-hover:accent-ring">
-                  <b.icon className="h-7 w-7" />
+                <div className="mb-7 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-secondary/80 text-accent transition-all duration-500 group-hover:border-accent/40 group-hover:accent-ring">
+                  <b.icon className="h-6.5 w-6.5" />
                 </div>
-                <h3 className="mb-3 font-display text-xl font-semibold tracking-wide">
+                <h3 className="mb-3.5 font-display text-2xl font-semibold tracking-wide">
                   {b.title}
                 </h3>
                 <p className="leading-relaxed text-muted-foreground">{b.text}</p>

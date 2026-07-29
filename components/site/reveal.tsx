@@ -3,13 +3,15 @@
 import { motion, type Variants } from 'motion/react'
 import type { ReactNode } from 'react'
 
+const LUXURY = [0.16, 1, 0.3, 1] as const
+
 const variants: Variants = {
-  hidden: { opacity: 0, y: 40, filter: 'blur(8px)' },
+  hidden: { opacity: 0, y: 48, filter: 'blur(10px)' },
   visible: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 1.1, ease: LUXURY },
   },
 }
 
@@ -28,10 +30,69 @@ export function Reveal({
       variants={variants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
+      viewport={{ once: true, margin: '-100px' }}
       transition={{ delay }}
     >
       {children}
     </motion.div>
+  )
+}
+
+/** Shared eyebrow + heading block used across sections for consistent editorial rhythm. */
+export function SectionHeading({
+  eyebrow,
+  title,
+  description,
+  align = 'left',
+  className,
+}: {
+  eyebrow: string
+  title: ReactNode
+  description?: ReactNode
+  align?: 'left' | 'center'
+  className?: string
+}) {
+  const centered = align === 'center'
+  return (
+    <div
+      className={`flex flex-col gap-5 ${centered ? 'items-center text-center' : ''} ${
+        className ?? ''
+      }`}
+    >
+      <motion.span
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: LUXURY }}
+        className="eyebrow inline-flex items-center gap-2.5"
+      >
+        <span className="h-px w-8 bg-accent/60" />
+        {eyebrow}
+      </motion.span>
+      <motion.h2
+        initial={{ opacity: 0, y: 28, filter: 'blur(8px)' }}
+        whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, ease: LUXURY }}
+        className={`font-display text-5xl font-bold uppercase leading-[0.92] tracking-tight text-balance md:text-7xl ${
+          centered ? 'max-w-3xl' : 'max-w-2xl'
+        }`}
+      >
+        {title}
+      </motion.h2>
+      {description ? (
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, delay: 0.1, ease: LUXURY }}
+          className={`text-lg leading-relaxed text-muted-foreground ${
+            centered ? 'max-w-xl' : 'max-w-xl'
+          }`}
+        >
+          {description}
+        </motion.p>
+      ) : null}
+    </div>
   )
 }
