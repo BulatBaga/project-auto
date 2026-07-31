@@ -15,94 +15,6 @@ export const navLinks = [
   { label: 'Контакты', href: '#contacts' },
 ]
 
-export type Car = {
-  id: string
-  name: string
-  price: number
-  year: number
-  mileage: number
-  transmission: string
-  fuel: string
-  drive: string
-  brand: string
-  image: string
-}
-
-export const cars: Car[] = [
-  {
-    id: '1',
-    name: 'Range Rover Velar',
-    price: 5490000,
-    year: 2022,
-    mileage: 34000,
-    transmission: 'Автомат',
-    fuel: 'Бензин',
-    drive: 'Полный',
-    brand: 'Land Rover',
-    image: '/cars/car-black-suv.png',
-  },
-  {
-    id: '2',
-    name: 'Mercedes-Benz E-Class',
-    price: 4290000,
-    year: 2021,
-    mileage: 48000,
-    transmission: 'Автомат',
-    fuel: 'Бензин',
-    drive: 'Задний',
-    brand: 'Mercedes-Benz',
-    image: '/cars/car-white-sedan.png',
-  },
-  {
-    id: '3',
-    name: 'BMW M4 Competition',
-    price: 6890000,
-    year: 2023,
-    mileage: 18000,
-    transmission: 'Автомат',
-    fuel: 'Бензин',
-    drive: 'Полный',
-    brand: 'BMW',
-    image: '/cars/car-grey-coupe.png',
-  },
-  {
-    id: '4',
-    name: 'Audi Q7',
-    price: 5990000,
-    year: 2022,
-    mileage: 41000,
-    transmission: 'Автомат',
-    fuel: 'Дизель',
-    drive: 'Полный',
-    brand: 'Audi',
-    image: '/cars/car-silver-crossover.png',
-  },
-  {
-    id: '5',
-    name: 'Genesis G80',
-    price: 4790000,
-    year: 2023,
-    mileage: 22000,
-    transmission: 'Автомат',
-    fuel: 'Бензин',
-    drive: 'Полный',
-    brand: 'Genesis',
-    image: '/cars/car-blue-sedan.png',
-  },
-  {
-    id: '6',
-    name: 'Porsche Panamera',
-    price: 8490000,
-    year: 2022,
-    mileage: 29000,
-    transmission: 'Автомат',
-    fuel: 'Бензин',
-    drive: 'Полный',
-    brand: 'Porsche',
-    image: '/cars/car-black-coupe.png',
-  },
-]
-
 export const reviews = [
   {
     name: 'Алексей Морозов',
@@ -123,11 +35,3 @@ export const reviews = [
     text: 'Долго выбирала и переживала за юридическую чистоту. Здесь показали все документы и историю. Спокойна за свою покупку.',
   },
 ]
-
-export function formatPrice(value: number) {
-  return new Intl.NumberFormat('ru-RU').format(value) + ' ₽'
-}
-
-export function formatMileage(value: number) {
-  return new Intl.NumberFormat('ru-RU').format(value) + ' км'
-}

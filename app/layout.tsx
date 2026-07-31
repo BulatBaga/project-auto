@@ -34,6 +34,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'ru_RU',
   },
+  metadataBase: new URL('https://avtobaza.example'),
 }
 
 export const viewport: Viewport = {
