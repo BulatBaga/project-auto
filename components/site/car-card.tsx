@@ -4,8 +4,8 @@ import Image from 'next/image'
 import { motion } from 'motion/react'
 import { Gauge, Calendar, Cog, Fuel, ArrowUpRight } from 'lucide-react'
 import { type Car, formatPrice, formatMileage } from '@/lib/site'
+import { LUXURY } from '@/lib/motion'
 
-const LUXURY = [0.16, 1, 0.3, 1] as const
 const specIcon = 'h-4 w-4 text-muted-foreground'
 
 export function CarCard({ car, index = 0 }: { car: Car; index?: number }) {
@@ -62,7 +62,7 @@ export function CarCard({ car, index = 0 }: { car: Car; index?: number }) {
           className="group/btn mt-7 flex items-center justify-between rounded-2xl border border-white/[0.08] bg-secondary/60 px-6 py-4 text-sm font-semibold text-foreground transition-all duration-300 hover:border-accent/50 hover:bg-accent/[0.06] hover:text-accent"
         >
           Подробнее
-          <ArrowUpRight className="h-4.5 w-4.5 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+          <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
         </a>
       </div>
     </motion.article>

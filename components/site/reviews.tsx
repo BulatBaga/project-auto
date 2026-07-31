@@ -5,8 +5,7 @@ import { motion } from 'motion/react'
 import { Star } from 'lucide-react'
 import { reviews } from '@/lib/site'
 import { SectionHeading } from './reveal'
-
-const LUXURY = [0.16, 1, 0.3, 1] as const
+import { LUXURY } from '@/lib/motion'
 
 export function Reviews() {
   return (
@@ -57,7 +56,7 @@ export function Reviews() {
 
               <div className="mb-5 flex gap-1">
                 {Array.from({ length: 5 }).map((_, s) => (
-                  <Star key={s} className="h-4.5 w-4.5 fill-accent text-accent" />
+                  <Star key={s} className="h-5 w-5 fill-accent text-accent" />
                 ))}
               </div>
               <blockquote className="relative flex-1 text-lg leading-relaxed text-foreground/90">
@@ -71,7 +70,7 @@ export function Reviews() {
                     alt={r.name}
                     width={52}
                     height={52}
-                    className="relative h-13 w-13 rounded-full object-cover"
+                    className="relative h-14 w-14 rounded-full object-cover"
                   />
                 </div>
                 <div>

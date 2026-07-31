@@ -1,19 +1,8 @@
 'use client'
 
-import { motion, type Variants } from 'motion/react'
+import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
-
-const LUXURY = [0.16, 1, 0.3, 1] as const
-
-const variants: Variants = {
-  hidden: { opacity: 0, y: 48, filter: 'blur(10px)' },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: { duration: 1.1, ease: LUXURY },
-  },
-}
+import { LUXURY, revealVariants } from '@/lib/motion'
 
 export function Reveal({
   children,
@@ -27,7 +16,7 @@ export function Reveal({
   return (
     <motion.div
       className={className}
-      variants={variants}
+      variants={revealVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-100px' }}
@@ -38,7 +27,6 @@ export function Reveal({
   )
 }
 
-/** Shared eyebrow + heading block used across sections for consistent editorial rhythm. */
 export function SectionHeading({
   eyebrow,
   title,
@@ -74,7 +62,7 @@ export function SectionHeading({
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: true }}
         transition={{ duration: 1, ease: LUXURY }}
-        className={`font-display text-5xl font-bold uppercase leading-[0.92] tracking-tight text-balance md:text-7xl ${
+        className={`font-display text-display-sm font-bold uppercase leading-[0.92] tracking-tight text-balance ${
           centered ? 'max-w-3xl' : 'max-w-2xl'
         }`}
       >
@@ -86,9 +74,7 @@ export function SectionHeading({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.1, ease: LUXURY }}
-          className={`text-lg leading-relaxed text-muted-foreground ${
-            centered ? 'max-w-xl' : 'max-w-xl'
-          }`}
+          className="max-w-xl text-lg leading-relaxed text-muted-foreground"
         >
           {description}
         </motion.p>

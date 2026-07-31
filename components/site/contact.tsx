@@ -3,6 +3,8 @@
 import { motion } from 'motion/react'
 import { Phone, MessageCircle, Send, MapPin, Clock } from 'lucide-react'
 import { contacts } from '@/lib/site'
+import { SectionHeading } from './reveal'
+import { LUXURY } from '@/lib/motion'
 
 const items = [
   {
@@ -29,15 +31,12 @@ const items = [
 
 export function Contact() {
   return (
-    <section id="contacts" className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
-      <div className="mb-14 flex flex-col gap-4">
-        <span className="text-sm font-medium uppercase tracking-[0.2em] text-accent">
-          Контакты
-        </span>
-        <h2 className="max-w-2xl font-display text-4xl font-bold uppercase leading-none tracking-tight text-balance md:text-6xl">
-          Приезжайте в гости
-        </h2>
-      </div>
+    <section id="contacts" className="relative mx-auto max-w-6xl px-6 py-28 md:px-10 md:py-40">
+      <SectionHeading
+        className="mb-16"
+        eyebrow="Контакты"
+        title="Приезжайте в гости"
+      />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="flex flex-col gap-4">
@@ -47,10 +46,10 @@ export function Contact() {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:border-accent/40"
+                transition={{ delay: i * 0.06, duration: 0.7, ease: LUXURY }}
+                className="group flex items-center gap-4 rounded-2xl border border-white/[0.07] bg-card p-5 ring-hairline transition-all duration-400 hover:border-accent/40 hover:bg-accent/[0.03]"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent transition-all duration-500 group-hover:accent-ring">
                   <item.icon className="h-5 w-5" />
                 </div>
                 <div>
@@ -80,14 +79,14 @@ export function Contact() {
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="relative min-h-[360px] overflow-hidden rounded-3xl border border-border"
+          transition={{ duration: 0.8, ease: LUXURY }}
+          className="relative min-h-[400px] overflow-hidden rounded-3xl border border-white/[0.07] ring-hairline"
         >
           <iframe
             title="Карта — Автосалон База"
             src="https://www.openstreetmap.org/export/embed.html?bbox=37.6%2C55.72%2C37.78%2C55.78&layer=mapnik"
             className="h-full w-full grayscale-[0.4] invert-[0.9] hue-rotate-180"
-            style={{ border: 0, minHeight: 360 }}
+            style={{ border: 0, minHeight: 400 }}
             loading="lazy"
           />
           <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-accent/20" />

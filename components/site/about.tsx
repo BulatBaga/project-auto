@@ -4,8 +4,7 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import { motion, useScroll, useTransform } from 'motion/react'
 import { Reveal } from './reveal'
-
-const LUXURY = [0.16, 1, 0.3, 1] as const
+import { LUXURY } from '@/lib/motion'
 
 const stats = [
   { value: '5000+', label: 'проданных автомобилей' },
@@ -42,7 +41,7 @@ export function About() {
               whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               viewport={{ once: true }}
               transition={{ duration: 1, ease: LUXURY }}
-              className="mt-6 font-display text-5xl font-bold uppercase leading-[0.9] tracking-tight text-balance md:text-8xl"
+              className="mt-6 font-display text-display-sm font-bold uppercase leading-[0.9] tracking-tight text-balance"
             >
               Автосалон,
               <br />

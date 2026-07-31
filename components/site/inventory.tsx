@@ -2,10 +2,11 @@
 
 import { useMemo, useState } from 'react'
 import { motion } from 'motion/react'
-import { SlidersHorizontal } from 'lucide-react'
+import { SlidersHorizontal, RotateCcw } from 'lucide-react'
 import { cars as allCars, type Car } from '@/lib/site'
 import { CarCard } from './car-card'
 import { SectionHeading } from './reveal'
+import { LUXURY } from '@/lib/motion'
 
 type Filters = {
   brand: string
@@ -40,7 +41,7 @@ function Select({
 }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-xs uppercase tracking-wider text-muted-foreground">{label}</span>
+      <span className="text-xs uppercase tracking-[0.15em] text-muted-foreground">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -78,6 +79,8 @@ export function Inventory({ inventory = allCars }: { inventory?: Car[] }) {
     ...arr.map((v) => ({ value: v, label: v })),
   ]
 
+  const activeCount = Object.values(filters).filter(Boolean).length
+
   return (
     <section id="inventory" className="relative mx-auto max-w-7xl px-6 py-28 md:px-10 md:py-40">
       <SectionHeading
@@ -92,12 +95,24 @@ export function Inventory({ inventory = allCars }: { inventory?: Car[] }) {
         initial={{ opacity: 0, y: 28, filter: 'blur(8px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: true }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.9, ease: LUXURY }}
         className="glass-strong ring-hairline mb-14 rounded-[1.75rem] p-7 shadow-luxury"
       >
-        <div className="mb-6 flex items-center gap-2.5 text-sm font-semibold text-foreground">
-          <SlidersHorizontal className="h-4 w-4 text-accent" />
-          Подбор по параметрам
+        <div className="mb-6 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 text-sm font-semibold text-foreground">
+            <SlidersHorizontal className="h-4 w-4 text-accent" />
+            Подбор по параметрам
+          </div>
+          {activeCount > 0 && (
+            <button
+              type="button"
+              onClick={() => setFilters(initial)}
+              className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-accent"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              Сбросить ({activeCount})
+            </button>
+          )}
         </div>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
           <Select label="Марка" value={filters.brand} onChange={set('brand')} options={opt('Все марки', unique(inventory, 'brand'))} />
@@ -132,7 +147,7 @@ export function Inventory({ inventory = allCars }: { inventory?: Car[] }) {
           <button
             type="button"
             onClick={() => setFilters(initial)}
-            className="mt-4 rounded-xl bg-accent px-6 py-3 font-semibold text-accent-foreground btn-glow"
+            className="btn-glow mt-4 rounded-xl bg-accent px-6 py-3 font-semibold text-accent-foreground"
           >
             Сбросить фильтры
           </button>

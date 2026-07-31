@@ -10,6 +10,7 @@ import {
   FileCheck,
 } from 'lucide-react'
 import { Reveal, SectionHeading } from './reveal'
+import { LUXURY } from '@/lib/motion'
 
 const benefits = [
   {
@@ -47,6 +48,8 @@ const benefits = [
 export function WhyUs() {
   return (
     <section className="relative border-y border-white/[0.05] bg-secondary/30 py-28 md:py-40">
+      {/* ambient accent glow */}
+      <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[40rem] -translate-x-1/2 rounded-full bg-accent/[0.06] blur-[160px]" />
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <SectionHeading
           className="mb-16"
@@ -62,8 +65,10 @@ export function WhyUs() {
                 transition={{ type: 'spring', stiffness: 300, damping: 24 }}
                 className="group relative h-full overflow-hidden rounded-[1.75rem] border border-white/[0.07] bg-card p-9 ring-hairline transition-all duration-500 hover:border-accent/25 hover:shadow-luxury"
               >
+                {/* hover gradient sweep */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/[0.06] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 <div className="mb-7 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/[0.08] bg-secondary/80 text-accent transition-all duration-500 group-hover:border-accent/40 group-hover:accent-ring">
-                  <b.icon className="h-6.5 w-6.5" />
+                  <b.icon className="h-7 w-7" />
                 </div>
                 <h3 className="mb-3.5 font-display text-2xl font-semibold tracking-wide">
                   {b.title}
