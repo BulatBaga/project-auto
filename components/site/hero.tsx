@@ -138,7 +138,7 @@ export function Hero() {
                 ease: 'easeInOut',
                 delay: i * 0.4,
               }}
-              className="flex items-center gap-2.5 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-foreground/90 backdrop-blur-md"
+              className="flex items-center gap-2.5 rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3 text-sm font-medium text-foreground/90 backdrop-blur-xl transition-colors duration-300 hover:border-accent/30"
             >
               <b.icon className="h-4 w-4 text-accent" />
               {b.label}

@@ -63,7 +63,7 @@ export function WhyUs() {
               <motion.div
                 whileHover={{ y: -8 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-                className="group relative h-full overflow-hidden rounded-[1.75rem] border border-white/[0.07] bg-card p-9 ring-hairline transition-all duration-500 hover:border-accent/25 hover:shadow-luxury"
+                className="group relative h-full overflow-hidden rounded-[1.75rem] border border-white/[0.07] bg-card p-9 shadow-card ring-hairline transition-[border-color,box-shadow] duration-500 hover:border-accent/25 hover:shadow-card-hover"
               >
                 {/* hover gradient sweep */}
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/[0.06] to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />

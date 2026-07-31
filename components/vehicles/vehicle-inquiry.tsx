@@ -9,10 +9,10 @@ import { LUXURY, springTap } from '@/lib/motion'
 import type { Vehicle } from '@/lib/vehicles/types'
 
 const field =
-  'w-full rounded-xl border border-input bg-secondary/60 px-4 py-3.5 text-foreground outline-none backdrop-blur-md transition-colors placeholder:text-muted-foreground/60 focus:border-accent focus:ring-2 focus:ring-accent/20'
+  'lux-select w-full rounded-xl border border-input bg-secondary/60 px-4 py-3.5 text-foreground outline-none backdrop-blur-md transition-all duration-300 placeholder:text-muted-foreground/60 hover:border-white/20 focus:border-accent focus:ring-2 focus:ring-accent/20'
 
 const pill =
-  'inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary/50 px-5 py-3 text-sm font-semibold transition-all duration-300 hover:border-accent/60 hover:text-accent hover:bg-accent/[0.05]'
+  'inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary/40 px-5 py-3.5 text-sm font-semibold text-foreground transition-all duration-400 hover:border-accent/60 hover:text-accent hover:bg-accent/[0.05]'
 
 export function VehicleInquiry({ vehicle }: { vehicle: Vehicle }) {
   const [submitted, setSubmitted] = useState(false)
@@ -30,19 +30,19 @@ export function VehicleInquiry({ vehicle }: { vehicle: Vehicle }) {
         {formatPrice(vehicle.price)}
       </p>
 
-      <div className="mt-5 flex flex-wrap gap-2.5">
-        <span className="rounded-lg border border-white/[0.07] bg-secondary/50 px-3 py-1.5 text-xs text-muted-foreground">
+      <div className="mt-6 flex flex-wrap gap-2.5">
+        <span className="rounded-lg border border-white/[0.07] bg-secondary/30 px-3.5 py-1.5 text-xs font-medium text-muted-foreground">
           {vehicle.year} г.
         </span>
-        <span className="rounded-lg border border-white/[0.07] bg-secondary/50 px-3 py-1.5 text-xs text-muted-foreground">
+        <span className="rounded-lg border border-white/[0.07] bg-secondary/30 px-3.5 py-1.5 text-xs font-medium text-muted-foreground">
           {vehicle.mileage.toLocaleString('ru-RU')} км
         </span>
-        <span className="rounded-lg border border-white/[0.07] bg-secondary/50 px-3 py-1.5 text-xs text-muted-foreground">
+        <span className="rounded-lg border border-white/[0.07] bg-secondary/30 px-3.5 py-1.5 text-xs font-medium text-muted-foreground">
           {vehicle.bodyType}
         </span>
       </div>
 
-      <div className="mt-6 flex flex-col gap-3">
+      <div className="mt-7 flex flex-col gap-3">
         <a href={contacts.phoneHref} className={pill}>
           <Phone className="h-4 w-4 text-accent" /> Позвонить
         </a>
@@ -64,7 +64,13 @@ export function VehicleInquiry({ vehicle }: { vehicle: Vehicle }) {
         </a>
       </div>
 
-      <div className="my-7 h-px bg-white/[0.06]" />
+      <div className="my-8 flex items-center gap-4">
+        <div className="h-px flex-1 bg-white/[0.06]" />
+        <span className="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-muted-foreground/60">
+          или
+        </span>
+        <div className="h-px flex-1 bg-white/[0.06]" />
+      </div>
 
       {submitted ? (
         <motion.div
@@ -94,7 +100,7 @@ export function VehicleInquiry({ vehicle }: { vehicle: Vehicle }) {
           }}
           className="flex flex-col gap-3"
         >
-          <div className="mb-1 flex items-center gap-2 text-sm font-semibold text-foreground">
+          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-foreground">
             <Calendar className="h-4 w-4 text-accent" />
             Записаться на просмотр
           </div>

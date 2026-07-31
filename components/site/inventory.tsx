@@ -2,14 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import {
-  SlidersHorizontal,
-  RotateCcw,
-  Search,
-  X,
-  ChevronDown,
-  Loader2,
-} from 'lucide-react'
+import { SlidersHorizontal, RotateCcw, Search, X, ChevronDown, Loader as Loader2 } from 'lucide-react'
 import {
   fetchVehicles,
   fetchFacets,
@@ -62,7 +55,7 @@ const initialFilters: VehicleFilters = {
 }
 
 const field =
-  'w-full rounded-xl border border-input bg-secondary/60 px-4 py-3 text-sm text-foreground outline-none backdrop-blur-md transition-colors placeholder:text-muted-foreground/60 focus:border-accent focus:ring-2 focus:ring-accent/20'
+  'lux-select w-full rounded-xl border border-input bg-secondary/60 px-4 py-3 text-sm text-foreground outline-none backdrop-blur-md transition-all duration-300 placeholder:text-muted-foreground/60 hover:border-white/20 focus:border-accent focus:ring-2 focus:ring-accent/20'
 
 function Select({
   label,
@@ -76,8 +69,8 @@ function Select({
   options: { value: string; label: string }[]
 }) {
   return (
-    <label className="flex flex-col gap-1.5">
-      <span className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
+    <label className="group flex flex-col gap-2">
+      <span className="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-muted-foreground/70 transition-colors duration-300 group-focus-within:text-accent">
         {label}
       </span>
       <div className="relative">
@@ -92,44 +85,7 @@ function Select({
             </option>
           ))}
         </select>
-        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      </div>
-    </label>
-  )
-}
-
-function NumberField({
-  label,
-  value,
-  onChange,
-  placeholder,
-  suffix,
-}: {
-  label: string
-  value: string
-  onChange: (v: string) => void
-  placeholder?: string
-  suffix?: string
-}) {
-  return (
-    <label className="flex flex-col gap-1.5">
-      <span className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
-        {label}
-      </span>
-      <div className="relative">
-        <input
-          type="number"
-          inputMode="numeric"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          className={suffix ? `${field} pr-12` : field}
-        />
-        {suffix && (
-          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-            {suffix}
-          </span>
-        )}
+        <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-transform duration-300 group-hover:text-accent" />
       </div>
     </label>
   )
@@ -312,9 +268,9 @@ export function Inventory() {
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
         viewport={{ once: true }}
         transition={{ duration: 0.9, ease: LUXURY }}
-        className="glass-strong ring-hairline mb-10 rounded-[1.75rem] p-7 shadow-luxury"
+        className="glass-strong ring-hairline mb-12 rounded-[1.75rem] p-8 shadow-luxury md:p-9"
       >
-        <div className="mb-6 flex items-center justify-between gap-3">
+        <div className="mb-7 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2.5 text-sm font-semibold text-foreground">
             <SlidersHorizontal className="h-4 w-4 text-accent" />
             Подбор по параметрам
@@ -323,7 +279,7 @@ export function Inventory() {
             <button
               type="button"
               onClick={reset}
-              className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-accent"
+              className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground transition-colors duration-300 hover:text-accent"
             >
               <RotateCcw className="h-3.5 w-3.5" />
               Сбросить ({activeCount})
@@ -331,7 +287,7 @@ export function Inventory() {
           )}
         </div>
 
-        <div className="relative mb-6">
+        <div className="relative mb-7">
           <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
@@ -355,8 +311,8 @@ export function Inventory() {
         </button>
       </motion.div>
 
-      <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-        <p className="text-sm text-muted-foreground">
+      <div className="mb-10 flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
+        <p className="text-sm tracking-wide text-muted-foreground">
           {loading ? (
             <span className="inline-flex items-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin text-accent" />
@@ -365,13 +321,13 @@ export function Inventory() {
           ) : (
             <>
               Найдено{' '}
-              <span className="font-semibold text-foreground">{total}</span>{' '}
+              <span className="font-display text-lg font-bold text-foreground">{total}</span>{' '}
               {pluralize(total, 'автомобиль', 'автомобиля', 'автомобилей')}
             </>
           )}
         </p>
-        <label className="flex items-center gap-3">
-          <span className="text-xs uppercase tracking-[0.15em] text-muted-foreground">
+        <label className="group flex items-center gap-3">
+          <span className="text-[0.7rem] font-medium uppercase tracking-[0.22em] text-muted-foreground/70">
             Сортировка
           </span>
           <div className="relative">
@@ -386,7 +342,7 @@ export function Inventory() {
                 </option>
               ))}
             </select>
-            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-colors duration-300 group-hover:text-accent" />
           </div>
         </label>
       </div>
@@ -404,14 +360,17 @@ export function Inventory() {
           ))}
         </div>
       ) : (
-        <div className="rounded-3xl border border-border bg-card p-16 text-center">
+        <div className="rounded-[1.75rem] border border-white/[0.07] bg-card p-20 text-center shadow-card ring-hairline">
+          <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-white/[0.07] bg-secondary/60">
+            <Search className="h-7 w-7 text-muted-foreground" />
+          </div>
           <p className="text-lg text-muted-foreground">
             По выбранным параметрам ничего не найдено.
           </p>
           <button
             type="button"
             onClick={reset}
-            className="btn-glow mt-4 rounded-xl bg-accent px-6 py-3 font-semibold text-accent-foreground"
+            className="btn-glow mt-6 rounded-xl bg-accent px-7 py-3.5 text-sm font-semibold text-accent-foreground"
           >
             Сбросить фильтры
           </button>

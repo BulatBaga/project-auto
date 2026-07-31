@@ -89,7 +89,7 @@ export function About() {
         <div className="mt-14 grid grid-cols-2 gap-x-6 gap-y-12 md:mt-20 md:grid-cols-4">
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.1}>
-              <div className="flex flex-col gap-2 border-t border-white/10 pt-6">
+              <div className="flex flex-col gap-2.5 border-t border-white/10 pt-7">
                 <div className="font-display text-5xl font-bold tracking-tight text-foreground md:text-6xl">
                   {s.value}
                 </div>

@@ -101,26 +101,27 @@ export default async function VehicleDetailsPage({
     <main className="relative overflow-x-hidden">
       <Navbar />
 
-      <div className="mx-auto max-w-7xl px-6 pb-28 pt-32 md:px-10 md:pt-40">
+      <div className="animate-page-enter mx-auto max-w-7xl px-6 pb-28 pt-32 md:px-10 md:pt-40">
         <Link
           href="/#inventory"
-          className="group mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+          className="group mb-10 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-300 hover:text-accent"
         >
           <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
           Вернуться к каталогу
         </Link>
 
-        <div className="grid gap-10 lg:grid-cols-3">
+        <div className="grid gap-12 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <div className="mb-6 flex flex-wrap items-center gap-3">
-              <span className="rounded-full border border-white/10 bg-secondary/60 px-4 py-1.5 text-xs font-medium tracking-wide text-foreground/80 backdrop-blur-md">
+            <div className="mb-7 flex flex-wrap items-center gap-3">
+              <span className="rounded-full border border-white/10 bg-secondary/40 px-4 py-1.5 text-xs font-medium tracking-wide text-foreground/80 backdrop-blur-xl">
                 {vehicle.brand}
               </span>
-              <span className="rounded-full border border-white/10 bg-secondary/60 px-4 py-1.5 text-xs font-medium tracking-wide text-foreground/80 backdrop-blur-md">
+              <span className="rounded-full border border-white/10 bg-secondary/40 px-4 py-1.5 text-xs font-medium tracking-wide text-foreground/80 backdrop-blur-xl">
                 {vehicle.bodyType}
               </span>
               {vehicle.isFeatured && (
-                <span className="rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-xs font-medium tracking-wide text-accent">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-xs font-medium tracking-wide text-accent">
+                  <ShieldCheck className="h-3.5 w-3.5" />
                   Проверен
                 </span>
               )}
@@ -129,28 +130,29 @@ export default async function VehicleDetailsPage({
             <h1 className="font-display text-4xl font-bold uppercase leading-[0.92] tracking-tight text-balance md:text-5xl">
               {vehicle.name}
             </h1>
-            <p className="mt-4 font-display text-3xl font-bold text-accent">
+            <p className="mt-5 font-display text-3xl font-bold text-accent">
               {formatPrice(vehicle.price)}
             </p>
 
-            <div className="mt-8">
+            <div className="mt-10">
               <VehicleGallery images={vehicle.gallery} name={vehicle.name} />
             </div>
 
-            <Reveal className="mt-14">
+            <Reveal className="mt-16">
               <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
                 Описание
               </h2>
-              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+              <div className="mt-6 h-px w-16 bg-accent/40" />
+              <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
                 {vehicle.description}
               </p>
             </Reveal>
 
-            <Reveal className="mt-14">
+            <Reveal className="mt-16">
               <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
                 Характеристики
               </h2>
-              <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-0 border-t border-white/[0.06] sm:grid-cols-2">
+              <div className="mt-7 grid grid-cols-1 gap-x-10 gap-y-0 border-t border-white/[0.06] sm:grid-cols-2">
                 {specs.map((s) => (
                   <div
                     key={s.label}
@@ -168,19 +170,19 @@ export default async function VehicleDetailsPage({
               </div>
             </Reveal>
 
-            <Reveal className="mt-14">
+            <Reveal className="mt-16">
               <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
                 Комплектация
               </h2>
-              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {vehicle.features.map((f) => {
                   const Icon = featureIconMap[f.icon] ?? BadgeCheck
                   return (
                     <div
                       key={f.label}
-                      className="flex items-center gap-3 rounded-2xl border border-white/[0.07] bg-card p-4 ring-hairline"
+                      className="group/feat flex items-center gap-3.5 rounded-2xl border border-white/[0.07] bg-card p-4 shadow-card ring-hairline transition-all duration-400 hover:border-accent/25"
                     >
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent transition-transform duration-400 group-hover/feat:scale-110">
                         <Icon className="h-5 w-5" />
                       </div>
                       <span className="text-sm font-medium text-foreground">
@@ -192,20 +194,20 @@ export default async function VehicleDetailsPage({
               </div>
             </Reveal>
 
-            <Reveal className="mt-14">
+            <Reveal className="mt-16">
               <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
                 Гарантии
               </h2>
-              <div className="mt-6 grid gap-4 sm:grid-cols-3">
+              <div className="mt-7 grid gap-4 sm:grid-cols-3">
                 {guarantees.map((g) => (
                   <div
                     key={g.title}
-                    className="rounded-2xl border border-white/[0.07] bg-card p-6 ring-hairline"
+                    className="group/guar rounded-2xl border border-white/[0.07] bg-card p-7 shadow-card ring-hairline transition-all duration-500 hover:border-accent/25 hover:shadow-card-hover"
                   >
-                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent">
+                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent transition-transform duration-500 group-hover/guar:scale-110">
                       <g.icon className="h-6 w-6" />
                     </div>
-                    <h3 className="mb-2 font-semibold text-foreground">{g.title}</h3>
+                    <h3 className="mb-2.5 font-display text-lg font-semibold tracking-wide">{g.title}</h3>
                     <p className="text-sm leading-relaxed text-muted-foreground">
                       {g.text}
                     </p>
@@ -221,17 +223,17 @@ export default async function VehicleDetailsPage({
         </div>
 
         {related.length > 0 && (
-          <div className="mt-28">
-            <div className="mb-10 flex items-end justify-between">
+          <div className="mt-32">
+            <div className="mb-12 flex items-end justify-between">
               <h2 className="font-display text-3xl font-bold uppercase tracking-wide">
                 Похожие автомобили
               </h2>
               <Link
                 href="/#inventory"
-                className="hidden items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-accent sm:flex"
+                className="group hidden items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-300 hover:text-accent sm:flex"
               >
                 Весь каталог
-                <ArrowLeft className="h-4 w-4 rotate-180" />
+                <ArrowLeft className="h-4 w-4 rotate-180 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
             <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
