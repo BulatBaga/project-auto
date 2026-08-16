@@ -9,6 +9,7 @@ export const contacts = {
 export const navLinks = [
   { label: 'Главная', href: '#hero' },
   { label: 'Автомобили', href: '#inventory' },
+  { label: 'Автокредит', href: '#credit' },
   { label: 'Подбор', href: '#cta' },
   { label: 'О нас', href: '#about' },
   { label: 'Контакты', href: '#contacts' },

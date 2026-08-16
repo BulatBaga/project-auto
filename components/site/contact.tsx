@@ -1,11 +1,22 @@
 'use client'
 
-import OfficeMap from './map'
 import { motion } from 'motion/react'
 import { Phone, MessageCircle, Send, MapPin, Clock } from 'lucide-react'
 import { contacts } from '@/lib/site'
 import { SectionHeading } from './reveal'
 import { LUXURY } from '@/lib/motion'
+import dynamic from 'next/dynamic'
+
+const OfficeMap = dynamic(() => import('./map'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full min-h-[400px] items-center justify-center bg-card">
+      <span className="text-sm text-muted-foreground">
+        Загрузка карты...
+      </span>
+    </div>
+  ),
+})
 
 const items = [
   {

@@ -89,6 +89,7 @@ if (phone.length < 18) {
   return (
     <>
     <motion.section
+    id="credit"
   initial={{ opacity: 0, y: 80 }}
   whileInView={{ opacity: 1, y: 0 }}
   viewport={{ once: true }}
