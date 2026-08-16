@@ -8,7 +8,7 @@ import { LUXURY, itemVariants, staggerContainer, springTap } from '@/lib/motion'
 
 const badges = [
   { icon: ShieldCheck, label: 'Полная проверка' },
-  { icon: BadgeCheck, label: '5000+ продано' },
+  { icon: BadgeCheck, label: '500+ продано' },
   { icon: Clock, label: 'Оформление за 1 день' },
 ]
 
@@ -16,14 +16,28 @@ const container: Variants = staggerContainer(0.12, 0.25)
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null)
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
   })
+
   const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '24%'])
   const imageScale = useTransform(scrollYProgress, [0, 1], [1.04, 1.18])
   const contentY = useTransform(scrollYProgress, [0, 1], ['0%', '45%'])
   const contentOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0])
+
+  // Надёжная прокрутка к нужному блоку
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id)
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    }
+  }
 
   return (
     <section
@@ -57,10 +71,13 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="animate-light-sweep absolute -left-1/4 top-0 h-[140%] w-1/2 bg-[linear-gradient(100deg,transparent,rgba(255,255,255,0.05),transparent)] blur-2xl" />
       </div>
+
       {/* subtle drifting smoke near the ground */}
       <div className="animate-smoke pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-[radial-gradient(ellipse_at_bottom,_rgba(255,255,255,0.06),transparent_70%)]" />
+
       {/* faint accent glow */}
       <div className="pointer-events-none absolute -left-40 top-1/3 h-[28rem] w-[28rem] rounded-full bg-accent/10 blur-[160px]" />
+
       <div className="absolute inset-0 grain opacity-40" />
 
       <motion.div
@@ -78,15 +95,15 @@ export function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
           </span>
-          Премиальный автосалон
+
+          Проверенные автомобили
         </motion.span>
 
         <motion.h1
           variants={itemVariants}
           className="font-display text-display font-bold uppercase leading-[0.82] tracking-tight text-balance"
         >
-          Автосалон
-          <br />
+          Автосалон{' '}
           <span className="text-accent text-glow">База</span>
         </motion.h1>
 
@@ -97,31 +114,33 @@ export function Hero() {
           Проверенные автомобили с пробегом — с полной юридической прозрачностью.
         </motion.p>
 
+        {/* КНОПКИ */}
         <motion.div
-          variants={itemVariants}
-          className="mt-11 flex flex-col gap-4 sm:flex-row"
-        >
-          <motion.a
-            href="#inventory"
-            whileHover={{ scale: 1.035 }}
-            whileTap={{ scale: 0.97 }}
-            transition={springTap}
-            className="btn-glow group inline-flex items-center justify-center gap-2.5 rounded-2xl bg-accent px-9 py-5 text-base font-semibold text-accent-foreground transition-shadow hover:btn-glow-hover"
-          >
-            Посмотреть автомобили
-            <ArrowRight className="h-5 w-5 transition-transform duration-500 group-hover:translate-x-1.5" />
-          </motion.a>
-          <motion.a
-            href="#cta"
-            whileHover={{ scale: 1.035 }}
-            whileTap={{ scale: 0.97 }}
-            transition={springTap}
-            className="group inline-flex items-center justify-center gap-2.5 rounded-2xl border border-white/12 bg-white/[0.04] px-9 py-5 text-base font-semibold text-foreground backdrop-blur-md transition-colors hover:border-accent/60 hover:text-accent"
-          >
-            <Search className="h-5 w-5" />
-            Подобрать автомобиль
-          </motion.a>
-        </motion.div>
+  variants={itemVariants}
+  className="mt-11 flex flex-col gap-4 sm:flex-row"
+>
+  <motion.a
+    href="#inventory"
+    whileHover={{ scale: 1.035 }}
+    whileTap={{ scale: 0.97 }}
+    transition={springTap}
+    className="btn-glow group inline-flex items-center justify-center gap-2.5 rounded-2xl bg-accent px-9 py-5 text-base font-semibold text-accent-foreground transition-shadow hover:btn-glow-hover"
+  >
+    Посмотреть автомобили
+    <ArrowRight className="h-5 w-5 transition-transform duration-500 group-hover:translate-x-1.5" />
+  </motion.a>
+
+  <motion.a
+    href="#cta"
+    whileHover={{ scale: 1.035 }}
+    whileTap={{ scale: 0.97 }}
+    transition={springTap}
+    className="group inline-flex items-center justify-center gap-2.5 rounded-2xl border border-white/12 bg-white/[0.04] px-9 py-5 text-base font-semibold text-foreground backdrop-blur-md transition-colors hover:border-accent/60 hover:text-accent"
+  >
+    <Search className="h-5 w-5" />
+    Подобрать автомобиль
+  </motion.a>
+</motion.div>
 
         {/* floating trust badges */}
         <motion.div
@@ -147,6 +166,7 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
+      {/* scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -156,7 +176,11 @@ export function Hero() {
         <div className="flex h-11 w-6 items-start justify-center rounded-full border border-white/15 p-1.5">
           <motion.span
             animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.8, ease: 'easeInOut' }}
+            transition={{
+              repeat: Number.POSITIVE_INFINITY,
+              duration: 1.8,
+              ease: 'easeInOut',
+            }}
             className="h-2.5 w-1 rounded-full bg-accent"
           />
         </div>

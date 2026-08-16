@@ -1,253 +1,66 @@
-import { notFound } from 'next/navigation'
-import Link from 'next/link'
-import type { Metadata } from 'next'
-import { ArrowLeft, ShieldCheck, ScrollText, BadgeCheck, Gauge, Calendar, Cog, Fuel, Car, Zap, Palette, FingerprintPattern as Fingerprint } from 'lucide-react'
-import mockData from '@/lib/vehicles/mock-data.json'
-import {
-  fetchVehicleById,
-  fetchRelatedVehicles,
-} from '@/lib/vehicles/repository'
-import {
-  formatEngine,
-  formatMileage,
-  formatPower,
-  formatPrice,
-} from '@/lib/vehicles/format'
-import { VehicleGallery } from '@/components/vehicles/vehicle-gallery'
-import { VehicleInquiry } from '@/components/vehicles/vehicle-inquiry'
-import { VehicleCard } from '@/components/vehicles/vehicle-card'
-import { Navbar } from '@/components/site/navbar'
-import { Footer } from '@/components/site/footer'
-import { MobileBar } from '@/components/site/mobile-bar'
-import { Reveal } from '@/components/site/reveal'
+type Car = {
+  id: number;
+  title: string;
+  price: number;
+  url: string;
+  address: string;
+status: string;
+};
 
-const featureIconMap: Record<string, typeof Gauge> = {
-  gauge: Gauge,
-  armchair: Car,
-  music: Zap,
-  snowflake: ShieldCheck,
-  camera: ShieldCheck,
-  navigation: BadgeCheck,
-  key: BadgeCheck,
-  shield: ShieldCheck,
-}
+export default async function Home() {
+  const res = await fetch("http://localhost:3000/api/avito/cars", {
+    cache: "no-store",
+  });
 
-export function generateStaticParams() {
-  const data = mockData as { id: string }[]
-  return data.map((v) => ({ id: v.id }))
-}
+  const data = await res.json();
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}): Promise<Metadata> {
-  const { id } = await params
-  const vehicle = await fetchVehicleById(id)
-  if (!vehicle) return { title: 'Автомобиль не найден' }
-  return {
-    title: `${vehicle.name} — ${formatPrice(vehicle.price)} | Автосалон БАЗА`,
-    description: vehicle.description.slice(0, 160),
-    openGraph: {
-      title: `${vehicle.name} — Автосалон БАЗА`,
-      description: vehicle.description.slice(0, 160),
-      images: [vehicle.image],
-    },
-  }
-}
-
-export default async function VehicleDetailsPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const { id } = await params
-  const vehicle = await fetchVehicleById(id)
-  if (!vehicle) notFound()
-
-  const related = await fetchRelatedVehicles(id, 3)
-
-  const specs = [
-    { icon: Calendar, label: 'Год выпуска', value: `${vehicle.year} г.` },
-    { icon: Gauge, label: 'Пробег', value: formatMileage(vehicle.mileage) },
-    { icon: Cog, label: 'Коробка передач', value: vehicle.transmission },
-    { icon: Fuel, label: 'Топливо', value: vehicle.fuel },
-    { icon: Car, label: 'Тип кузова', value: vehicle.bodyType },
-    { icon: BadgeCheck, label: 'Привод', value: vehicle.drive },
-    { icon: Zap, label: 'Двигатель', value: `${formatEngine(vehicle.engineVolume)} / ${formatPower(vehicle.power)}` },
-    { icon: Palette, label: 'Цвет', value: vehicle.color },
-    { icon: Fingerprint, label: 'VIN', value: vehicle.vin },
-  ]
-
-  const guarantees = [
-    {
-      icon: ShieldCheck,
-      title: 'Техническая проверка',
-      text: 'Диагностика по 120 параметрам у сертифицированных механиков.',
-    },
-    {
-      icon: ScrollText,
-      title: 'Юридическая чистота',
-      text: 'Проверка истории, залогов, ограничений и штрафов.',
-    },
-    {
-      icon: BadgeCheck,
-      title: 'Гарантия качества',
-      text: 'Полная гарантия на двигатель и коробку передач.',
-    },
-  ]
+  const cars: Car[] = data.resources ?? [];
 
   return (
-    <main className="relative overflow-x-hidden">
-      <Navbar />
+    <main className="max-w-7xl mx-auto p-8">
+      <h1 className="text-4xl font-bold mb-8">
+        Автомобили в наличии
+      </h1>
 
-      <div className="animate-page-enter mx-auto max-w-7xl px-6 pb-28 pt-32 md:px-10 md:pt-40">
-        <Link
-          href="/#inventory"
-          className="group mb-10 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-300 hover:text-accent"
-        >
-          <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
-          Вернуться к каталогу
-        </Link>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
 
-        <div className="grid gap-12 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <div className="mb-7 flex flex-wrap items-center gap-3">
-              <span className="rounded-full border border-white/10 bg-secondary/40 px-4 py-1.5 text-xs font-medium tracking-wide text-foreground/80 backdrop-blur-xl">
-                {vehicle.brand}
-              </span>
-              <span className="rounded-full border border-white/10 bg-secondary/40 px-4 py-1.5 text-xs font-medium tracking-wide text-foreground/80 backdrop-blur-xl">
-                {vehicle.bodyType}
-              </span>
-              {vehicle.isFeatured && (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-xs font-medium tracking-wide text-accent">
-                  <ShieldCheck className="h-3.5 w-3.5" />
-                  Проверен
-                </span>
-              )}
-            </div>
+        {cars.map((car) => (
+          <div
+            key={car.id}
+            className="rounded-2xl shadow-lg border overflow-hidden bg-white"
+          >
+            <img
+  src="/cars/no-image.jpg"
+  alt={car.title}
+  className="h-64 w-full object-cover"
+/>
 
-            <h1 className="font-display text-4xl font-bold uppercase leading-[0.92] tracking-tight text-balance md:text-5xl">
-              {vehicle.name}
-            </h1>
-            <p className="mt-5 font-display text-3xl font-bold text-accent">
-              {formatPrice(vehicle.price)}
-            </p>
+            <div className="p-5">
 
-            <div className="mt-10">
-              <VehicleGallery images={vehicle.gallery} name={vehicle.name} />
-            </div>
-
-            <Reveal className="mt-16">
-              <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
-                Описание
+              <h2 className="font-bold text-xl">
+                {car.title}
               </h2>
-              <div className="mt-6 h-px w-16 bg-accent/40" />
-              <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                {vehicle.description}
-              </p>
-            </Reveal>
 
-            <Reveal className="mt-16">
-              <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
-                Характеристики
-              </h2>
-              <div className="mt-7 grid grid-cols-1 gap-x-10 gap-y-0 border-t border-white/[0.06] sm:grid-cols-2">
-                {specs.map((s) => (
-                  <div
-                    key={s.label}
-                    className="flex items-center justify-between border-b border-white/[0.06] py-4"
-                  >
-                    <span className="flex items-center gap-3 text-sm text-muted-foreground">
-                      <s.icon className="h-4 w-4 text-accent" />
-                      {s.label}
-                    </span>
-                    <span className="text-sm font-medium text-foreground">
-                      {s.value}
-                    </span>
-                  </div>
-                ))}
+              <div className="text-2xl text-blue-600 font-bold mt-3">
+                {car.price.toLocaleString()} ₽
               </div>
-            </Reveal>
+              <p className="mt-2 text-gray-500">
+  {car.address}
+</p>
 
-            <Reveal className="mt-16">
-              <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
-                Комплектация
-              </h2>
-              <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {vehicle.features.map((f) => {
-                  const Icon = featureIconMap[f.icon] ?? BadgeCheck
-                  return (
-                    <div
-                      key={f.label}
-                      className="group/feat flex items-center gap-3.5 rounded-2xl border border-white/[0.07] bg-card p-4 shadow-card ring-hairline transition-all duration-400 hover:border-accent/25"
-                    >
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent transition-transform duration-400 group-hover/feat:scale-110">
-                        <Icon className="h-5 w-5" />
-                      </div>
-                      <span className="text-sm font-medium text-foreground">
-                        {f.label}
-                      </span>
-                    </div>
-                  )
-                })}
-              </div>
-            </Reveal>
-
-            <Reveal className="mt-16">
-              <h2 className="font-display text-2xl font-semibold uppercase tracking-wide">
-                Гарантии
-              </h2>
-              <div className="mt-7 grid gap-4 sm:grid-cols-3">
-                {guarantees.map((g) => (
-                  <div
-                    key={g.title}
-                    className="group/guar rounded-2xl border border-white/[0.07] bg-card p-7 shadow-card ring-hairline transition-all duration-500 hover:border-accent/25 hover:shadow-card-hover"
-                  >
-                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl border border-accent/30 bg-accent/10 text-accent transition-transform duration-500 group-hover/guar:scale-110">
-                      <g.icon className="h-6 w-6" />
-                    </div>
-                    <h3 className="mb-2.5 font-display text-lg font-semibold tracking-wide">{g.title}</h3>
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      {g.text}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-
-          <div className="lg:col-span-1">
-            <VehicleInquiry vehicle={vehicle} />
-          </div>
-        </div>
-
-        {related.length > 0 && (
-          <div className="mt-32">
-            <div className="mb-12 flex items-end justify-between">
-              <h2 className="font-display text-3xl font-bold uppercase tracking-wide">
-                Похожие автомобили
-              </h2>
-              <Link
-                href="/#inventory"
-                className="group hidden items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-300 hover:text-accent sm:flex"
+              <a
+                href={car.url}
+                target="_blank"
+                className="mt-5 block text-center bg-blue-600 text-white rounded-xl py-3 hover:bg-blue-700"
               >
-                Весь каталог
-                <ArrowLeft className="h-4 w-4 rotate-180 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-            </div>
-            <div className="grid gap-7 md:grid-cols-2 lg:grid-cols-3">
-              {related.map((v, i) => (
-                <VehicleCard key={v.id} vehicle={v} index={i} />
-              ))}
+                Смотреть на Авито
+              </a>
+
             </div>
           </div>
-        )}
-      </div>
+        ))}
 
-      <Footer />
-      <div className="h-20 lg:hidden" />
-      <MobileBar />
+      </div>
     </main>
-  )
+  );
 }

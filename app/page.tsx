@@ -1,6 +1,7 @@
 import { Navbar } from '@/components/site/navbar'
 import { Hero } from '@/components/site/hero'
 import { Inventory } from '@/components/site/inventory'
+import { CreditCalculator } from '@/components/site/credit-calculator'
 import { WhyUs } from '@/components/site/why-us'
 import { Cta } from '@/components/site/cta'
 import { About } from '@/components/site/about'
@@ -16,6 +17,7 @@ export default function Page() {
       <Hero />
       <Inventory />
       <WhyUs />
+      <CreditCalculator />
       <Cta />
       <About />
       <Reviews />
