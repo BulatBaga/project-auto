@@ -7,8 +7,10 @@ export async function fetchVehicles(): Promise<{
   total: number;
 }> {
   const res = await fetch(API, {
-    cache: "no-store",
-  });
+  next: {
+    revalidate: 60,
+  },
+});
 
   if (!res.ok) {
     throw new Error(`Ошибка API: ${res.status}`);
