@@ -1,6 +1,15 @@
-const AVITO_URL = "https://api.avito.ru/token";
+const AVITO_URL = "https://api.avito.ru/token";;
 
 export async function getAvitoToken() {
+  const clientId = process.env.AVITO_CLIENT_ID;
+  const clientSecret = process.env.AVITO_CLIENT_SECRET;
+
+  if (!clientId || !clientSecret) {
+    throw new Error(
+      "Не настроены AVITO_CLIENT_ID или AVITO_CLIENT_SECRET"
+    );
+  }
+
   const response = await fetch(AVITO_URL, {
     method: "POST",
     headers: {
@@ -8,17 +17,22 @@ export async function getAvitoToken() {
     },
     body: new URLSearchParams({
       grant_type: "client_credentials",
-      client_id: process.env.AVITO_CLIENT_ID!,
-      client_secret: process.env.AVITO_CLIENT_SECRET!,
+      client_id: clientId,
+      client_secret: clientSecret,
     }),
+    cache: "no-store",
   });
 
   const data = await response.json();
 
-  console.log("AVITO TOKEN:", data);
-
   if (!response.ok) {
-    throw new Error(JSON.stringify(data));
+    console.error("AVITO TOKEN ERROR:", response.status, data);
+
+    throw new Error(
+      `Avito token error: ${response.status} ${
+        response.statusText
+      }`
+    );
   }
 
   return data;
