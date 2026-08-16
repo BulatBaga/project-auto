@@ -22,7 +22,12 @@ export default function OfficeMap() {
         center: [54.741756, 55.993272],
         zoom: 17,
         scrollWheelZoom: true,
+        attributionControl: false,
       })
+      
+L.control.attribution({
+  prefix: false,
+}).addTo(map)
 
       L.tileLayer(
         'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
