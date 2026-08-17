@@ -10,6 +10,9 @@ type Car = {
   address?: string;
   status?: string;
 };
+
+const SITE_URL = "https://автосалон-база.рф";
+
 export async function generateMetadata({
   params,
 }: {
@@ -44,19 +47,29 @@ export async function generateMetadata({
       .filter(Boolean)
       .join(" ");
 
+    const canonicalUrl = `${SITE_URL}/cars/${car.id}`;
+
     return {
       title,
       description,
+
       alternates: {
-        canonical: `https://автосалон-база.рф/cars/${car.id}`,
+        canonical: canonicalUrl,
       },
+
       openGraph: {
         title,
         description,
-        url: `https://автосалон-база.рф/cars/${car.id}`,
+        url: canonicalUrl,
         type: "website",
         locale: "ru_RU",
         siteName: "Автосалон БАЗА",
+        images: [
+          {
+            url: `${SITE_URL}/api/car-image/${car.id}`,
+            alt: car.title,
+          },
+        ],
       },
     };
   } catch (error) {
@@ -89,14 +102,91 @@ export default async function CarPage({
     if (!car) {
       notFound();
     }
+    
+    const canonicalUrl = `${SITE_URL}/cars/${car.id}`;
+    const imageUrl = `${SITE_URL}/api/car-image/${car.id}`;
+
+    /*
+     * Структурированные данные для Google.
+     *
+     * Используем одновременно Product и Car,
+     * как рекомендует Google для автомобильных страниц.
+     */
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": ["Product", "Car"],
+
+      name: car.title,
+
+      description: [
+        `${car.title}.`,
+        `${car.price.toLocaleString("ru-RU")} ₽.`,
+        car.address ? `${car.address}.` : "",
+        "Проверенный автомобиль с пробегом в Автосалоне БАЗА.",
+      ]
+        .filter(Boolean)
+        .join(" "),
+
+      image: [imageUrl],
+
+      url: canonicalUrl,
+
+      sku: String(car.id),
+
+      category: "Автомобиль с пробегом",
+
+      brand: {
+        "@type": "Brand",
+        name: "Автомобиль",
+      },
+
+      offers: {
+        "@type": "Offer",
+        url: canonicalUrl,
+        priceCurrency: "RUB",
+        price: car.price,
+        itemCondition: "https://schema.org/UsedCondition;",
+        availability: "https://schema.org/InStock;",
+      },
+
+      ...(car.address
+        ? {
+            offers: {
+              "@type": "Offer",
+              url: canonicalUrl,
+              priceCurrency: "RUB",
+              price: car.price,
+              itemCondition: "https://schema.org/UsedCondition;",
+              availability: "https://schema.org/InStock;",
+
+              seller: {
+                "@type": "AutoDealer",
+                name: "Автосалон БАЗА",
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: "Уфа",
+                  addressCountry: "RU",
+                  streetAddress: car.address,
+                },
+              },
+            },
+          }
+        : {}),
+    };
 
     return (
       <main className="max-w-7xl mx-auto p-8">
-        <div className="grid gap-8 md:grid-cols-2">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
 
+        <div className="grid gap-8 md:grid-cols-2">
           <div className="rounded-2xl overflow-hidden shadow-lg bg-white">
             <img
-              src={`/api/car-image/${car.id}`}
+              src={imageUrl}
               alt={car.title}
               className="w-full h-[400px] object-cover"
             />
@@ -126,7 +216,6 @@ export default async function CarPage({
               Посмотреть объявление на Авито
             </a>
           </div>
-
         </div>
       </main>
     );
