@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { getAvitoCars } from "@/lib/avito-cars";
 
 type Car = {
@@ -9,6 +10,65 @@ type Car = {
   address?: string;
   status?: string;
 };
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+
+  try {
+    const data = await getAvitoCars();
+    const cars: Car[] = data.resources ?? [];
+
+    const car = cars.find(
+      (item) => String(item.id) === String(id)
+    );
+
+    if (!car) {
+      return {
+        title: "Автомобиль не найден | Автосалон БАЗА",
+        description:
+          "Автомобиль не найден в каталоге Автосалона БАЗА.",
+      };
+    }
+
+    const title = `${car.title} — купить в Уфе | Автосалон БАЗА`;
+
+    const description = [
+      `${car.title}.`,
+      `${car.price.toLocaleString("ru-RU")} ₽.`,
+      car.address ? `${car.address}.` : "",
+      "Проверенный автомобиль с пробегом в Автосалоне БАЗА.",
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: `https://автосалон-база.рф/cars/${car.id}`,
+      },
+      openGraph: {
+        title,
+        description,
+        url: `https://автосалон-база.рф/cars/${car.id}`,
+        type: "website",
+        locale: "ru_RU",
+        siteName: "Автосалон БАЗА",
+      },
+    };
+  } catch (error) {
+    console.error("Ошибка SEO автомобиля:", error);
+
+    return {
+      title: "Автомобиль с пробегом | Автосалон БАЗА",
+      description:
+        "Автомобили с пробегом в Уфе — Автосалон БАЗА.",
+    };
+  }
+}
 
 export default async function CarPage({
   params,
