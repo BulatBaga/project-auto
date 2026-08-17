@@ -11,8 +11,8 @@ export async function getAvitoCars() {
         Accept: "application/json",
       },
       next: {
-  revalidate: 60,
-},
+        revalidate: 60,
+      },
     }
   );
 
